@@ -3756,13 +3756,15 @@ status_t SurfaceFlinger::captureScreenImplLocked(
         if (state.layerStack == hw->getLayerStack() && state.z >= minLayerZ &&
                 state.z <= maxLayerZ && layer->isVisible() &&
                 layer->isSecure()) {
-            secureLayerIsVisible = true;
+            secureLayerIsVisible = false;
         }
     }
 
-    if (!isLocalScreenshot && secureLayerIsVisible) {
-        ALOGW("FB is protected: PERMISSION_DENIED");
-        return PERMISSION_DENIED;
+    if (secureLayerIsVisible) {
+        if (!isLocalScreenshot) {
+            ALOGW("FB is protected: PERMISSION_DENIED");
+            return PERMISSION_DENIED;
+        }
     }
 
     // create a surface (because we're a producer, and we need to
