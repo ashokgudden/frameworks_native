@@ -152,6 +152,8 @@ public:
         return *mRenderEngine;
     }
 
+    void setTranslate(int x, int y);
+
 private:
     friend class Client;
     friend class DisplayEventConnection;
